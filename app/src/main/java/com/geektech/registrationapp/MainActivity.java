@@ -19,16 +19,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private MaterialButton btnEnter;
     private TextView textLogo;
-    private TextView textWelcome;
     private TextView regis;
     private TextView help;
     private LinearLayout enter;
 
-    Toast toasTrue = Toast.makeText(getApplicationContext(),
-            "Вы успешно зарегистрировались!", Toast.LENGTH_SHORT);
 
-    Toast toastFalse = Toast.makeText(getApplicationContext(),
-            "Ошибка!", Toast.LENGTH_SHORT);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +34,15 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.edit_text_password);
         btnEnter = findViewById(R.id.btn_enter);
         textLogo = findViewById(R.id.text_logo);
-        textWelcome = findViewById(R.id.text_welcome);
         regis = findViewById(R.id.regis);
         help = findViewById(R.id.help);
         enter = findViewById(R.id.enter);
+
+        Toast toastTrue = Toast.makeText(getApplicationContext(),
+                "Вы успешно зарегистрировались!", Toast.LENGTH_SHORT);
+
+        Toast toastFalse = Toast.makeText(getApplicationContext(),
+                "Ошибка!", Toast.LENGTH_SHORT);
 
         editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -57,28 +57,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String emailInput = editTextEmail.getText().toString().trim();
-                String passwordInput = editTextPassword.getText().toString().trim();
+                String edit_text_email = editTextEmail.getText().toString().trim();
+                String edit_text_password = editTextPassword.getText().toString().trim();
 
                 if(editTextEmail.length()>0 || editTextPassword.length()>0) {
                     btnEnter.setBackgroundColor(getResources().getColor(R.color.orange));
 
-                    btnEnter.setOnClickListener(new View.OnClickListener() {
+                    btnEnter.setOnClickListener(view -> {
+                        if (edit_text_email.equals("admin") || edit_text_password.equals("admin")) {
+                            toastTrue.show();
+                            textLogo.animate().alpha(0);
+                            regis.animate().alpha(0);
+                            help.animate().alpha(0);
+                            enter.animate().alpha(0);
 
-
-                        @Override
-                        public void onClick(View view) {
-                            if (editTextEmail.equals("admin") || editTextPassword.equals("admin")) {
-                                toasTrue.show();
-                                textLogo.animate().alpha(0);
-                                textWelcome.animate().alpha(0);
-                                regis.animate().alpha(0);
-                                help.animate().alpha(0);
-                                enter.animate().alpha(0);
-
-                            } else {
-                                toasTrue.show();
-                            }
+                        } else {
+                            toastFalse.show();
                         }
                     });
                 }else{
